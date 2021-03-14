@@ -1,52 +1,64 @@
 package main
 
 import (
+	"fmt"
 	"log"
 	"net/http"
 	"os"
 	"projects/goaktify/handlers"
 	"projects/goaktify/models"
 
+	"github.com/joho/godotenv"
+
 	"goji.io"
 	"goji.io/pat"
 )
 
 func main() {
+	err := initEnv()
+	if err != nil {
+		log.Fatal(err)
+	}
 	mux := goji.NewMux()
 	var ch handlers.CampaignHandler
 
-	// err := models.InitDB("postgres://user:pass@localhost/bookstore")
-	err := models.InitDB(os.Getenv("TEST_DB_USER"), os.Getenv("TEST_DB_PASSWORD"), os.Getenv("TEST_DB_PORT"), os.Getenv("TEST_DB_HOST"), os.Getenv("TEST_DB_NAME"))
+	err = models.InitDB(os.Getenv("DB_HOST"), os.Getenv("DB_PORT"), os.Getenv("DB_USER"), os.Getenv("DB_PASSWORD"), os.Getenv("DB_NAME"))
 	if err != nil {
 		log.Fatal(err)
 	}
 
-	ch.Init()
-
-	//TODO add CORS
-
-	// Is our DB up? etc...
-	// Would use this style to test handlers as well
-	mux.HandleFunc(pat.Get("/healthcheck/"), ch.HealthCheck)
+	//TODO setup CORS
 
 	// CRUDL endpoints for our Campaigns
 
-	// Create our campaign
+	// Create campaign
 	mux.HandleFunc(pat.Post("/campaigns/"), ch.Create)
 
-	// Read our campaign by ID
+	// Read campaign by ID
 	mux.HandleFunc(pat.Get("/campaigns/:id"), ch.Read)
 
-	// Update our campaign.
-	// Specifically no PATCH endpoint here.
-	// Going to enforce idempotency for now
+	// Update campaign
+	// Specifically no PATCH endpoint here
+	// Going to enforce idempotency for now by omitting
 	mux.HandleFunc(pat.Put("/campaigns/"), ch.Update)
 
 	// Delete our campaign by ID
 	mux.HandleFunc(pat.Delete("/campaigns/:id"), ch.Delete)
 
-	// List all campaigns. I would usally do this by company/location ID. Not going to here.
+	// List campaigns
+	// I would usally do this by company or locationID
+	// Not going to here due brevity
 	mux.HandleFunc(pat.Get("/campaigns/"), ch.List)
 
-	http.ListenAndServe("localhost:8000", mux)
+	http.ListenAndServe(":8080", mux)
+}
+func initEnv() error {
+	var err error
+	err = godotenv.Load()
+	if err != nil {
+		log.Fatalf("Error getting env, %v", err)
+	} else {
+		fmt.Println("We are getting the env values")
+	}
+	return err
 }

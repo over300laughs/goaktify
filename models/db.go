@@ -10,10 +10,10 @@ import (
 // Create an exported global variable to hold the database connection pool.
 var DB *sql.DB
 
-func InitDB(user, password, port, host, dbName string) error {
+func InitDB(host, port, user, password, dbName string) error {
 
 	// setup DB connection
-	DBURL := fmt.Sprintf("host=%s port=%s user=%s sslmode=disable password=%s dbname=%s", "127.0.0.1", "5432", "postgres", "postgres", "aktify_db_1")
+	DBURL := fmt.Sprintf("host=%s port=%s user=%s sslmode=disable password=%s dbname=%s", host, port, user, password, dbName)
 	var err error
 
 	DB, err = sql.Open("postgres", DBURL)

@@ -1,7 +1,7 @@
 # Start from golang base image
 FROM golang:alpine as builder
 
-# ENV GO111MODULE=on
+ENV GO111MODULE=on
 
 # Install git.
 # Git is required for fetching the dependencies.
@@ -33,7 +33,7 @@ COPY --from=builder /app/main .
 COPY --from=builder /app/.env .       
 
 # Expose port 8080 to the outside world
-EXPOSE 8000
+EXPOSE 8080
 
 #Command to run the executable
 CMD ["./main"]

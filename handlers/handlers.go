@@ -21,11 +21,6 @@ type Handler interface {
 
 type CampaignHandler struct{}
 
-func (ch *CampaignHandler) Init() {
-	// nothing to initialize for now so just return
-	return
-}
-
 func (ch *CampaignHandler) Create(w http.ResponseWriter, r *http.Request) {
 
 	var in models.Campaign
@@ -90,10 +85,5 @@ func (ch *CampaignHandler) Delete(w http.ResponseWriter, r *http.Request) {
 
 func (ch *CampaignHandler) List(w http.ResponseWriter, r *http.Request) {
 	fmt.Print("List endpoint unimplemented")
-	return
-}
-
-func (ch *CampaignHandler) HealthCheck(w http.ResponseWriter, r *http.Request) {
-	fmt.Print("List endpoint unimplemented\n")
 	return
 }
