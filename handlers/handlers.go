@@ -1,8 +1,13 @@
 package handlers
 
 import (
+	"encoding/json"
 	"fmt"
 	"net/http"
+	"projects/goaktify/models"
+	"strconv"
+
+	"goji.io/pat"
 )
 
 type Handler interface {
@@ -14,39 +19,81 @@ type Handler interface {
 	HealthChecker(w http.ResponseWriter, r *http.Request)
 }
 
-type Campaign struct{}
+type CampaignHandler struct{}
 
-func (c *Campaign) Init() {
+func (ch *CampaignHandler) Init() {
 	// nothing to initialize for now so just return
 	return
 }
 
-func (c *Campaign) Create(w http.ResponseWriter, r *http.Request) {
-	fmt.Print("Create endpoint")
+func (ch *CampaignHandler) Create(w http.ResponseWriter, r *http.Request) {
+
+	var in models.Campaign
+
+	err := json.NewDecoder(r.Body).Decode(&in)
+	if err != nil {
+		http.Error(w, err.Error(), http.StatusBadRequest)
+		return
+	}
+
+	err = in.Create()
+	if err != nil {
+		http.Error(w, err.Error(), http.StatusInternalServerError)
+		return
+	}
+
+	out, err := json.Marshal(in)
+	if err != nil {
+		http.Error(w, err.Error(), http.StatusInternalServerError)
+		return
+	}
+
+	w.Write(out)
+
 	return
 }
 
-func (c *Campaign) Read(w http.ResponseWriter, r *http.Request) {
-	fmt.Print("Read endpoint")
+func (ch *CampaignHandler) Read(w http.ResponseWriter, r *http.Request) {
+
+	id, err := strconv.Atoi(pat.Param(r, "id"))
+	if err != nil {
+		http.Error(w, err.Error(), http.StatusBadRequest)
+		return
+	}
+
+	var campaign models.Campaign
+
+	err = campaign.Read(id)
+	if err != nil {
+		http.Error(w, err.Error(), http.StatusInternalServerError)
+		return
+	}
+
+	out, err := json.Marshal(campaign)
+	if err != nil {
+		http.Error(w, err.Error(), http.StatusInternalServerError)
+		return
+	}
+
+	w.Write(out)
+}
+
+func (ch *CampaignHandler) Update(w http.ResponseWriter, r *http.Request) {
+	fmt.Print("Update endpoint unimplemented")
 	return
 }
 
-func (c *Campaign) Update(w http.ResponseWriter, r *http.Request) {
-	fmt.Print("Update endpoint")
+func (ch *CampaignHandler) Delete(w http.ResponseWriter, r *http.Request) {
+	fmt.Print("Delete endpoint unimplemented")
 	return
 }
 
-func (c *Campaign) Delete(w http.ResponseWriter, r *http.Request) {
-	fmt.Print("Delete endpoint")
+func (ch *CampaignHandler) List(w http.ResponseWriter, r *http.Request) {
+	fmt.Print("List endpoint unimplemented")
 	return
 }
 
-func (c *Campaign) List(w http.ResponseWriter, r *http.Request) {
-	fmt.Print("List endpoint\n")
-	return
-}
-
-func (c *Campaign) HealthCheck(w http.ResponseWriter, r *http.Request) {
-	fmt.Print("List endpoint\n")
+func (ch *CampaignHandler) HealthCheck(w http.ResponseWriter, r *http.Request) {
+	fmt.Print("List endpoint unimplemented\n")
 	return
 }
