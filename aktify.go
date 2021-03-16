@@ -32,7 +32,7 @@ func main() {
 	// CRUDL endpoints for our Campaigns
 
 	// Create campaign
-	mux.HandleFunc(pat.Post("/campaigns/"), ch.Create)
+	mux.HandleFunc(pat.Post("/campaigns"), ch.Create)
 
 	// Read campaign by ID
 	mux.HandleFunc(pat.Get("/campaigns/:id"), ch.Read)
@@ -40,7 +40,7 @@ func main() {
 	// Update campaign
 	// Specifically no PATCH endpoint here
 	// Going to enforce idempotency for now by omitting
-	mux.HandleFunc(pat.Put("/campaigns/"), ch.Update)
+	mux.HandleFunc(pat.Put("/campaigns"), ch.Update)
 
 	// Delete our campaign by ID
 	mux.HandleFunc(pat.Delete("/campaigns/:id"), ch.Delete)
@@ -48,7 +48,7 @@ func main() {
 	// List campaigns
 	// I would usally do this by company or locationID
 	// Not going to here due brevity
-	mux.HandleFunc(pat.Get("/campaigns/"), ch.List)
+	mux.HandleFunc(pat.Get("/campaigns"), ch.List)
 
 	http.ListenAndServe(":8080", mux)
 }
