@@ -46,6 +46,13 @@ curl --header "Content-Type: application/json" \
   http://localhost:8080/campaigns/1
   ``` 
 
+Things I would do different or wish I had time to add:
+1. An ORM is nice but not always used in the Go world. I would have tried out GORM
+2. I would've used Goose for migrations
+3. Added CORS
+4. Abstracted routes and tests to work with multiplexer. (mux)
+5. And many other things...
+
 Thanks again for taking the time to look it over!!
 
 -Michael
