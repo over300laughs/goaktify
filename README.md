@@ -13,14 +13,18 @@ Here's the steps to check it out:
 
 > **Note:** Unfortunately I didn't have time to fully implement the unit tests in their fullest. However, there is a fair amount of database setup in place. See `tests/handlertests/handler_test.go` to view the test code. 
 
-To view the database you can go to `http:localhost:5050` using pgAdmin in a browser as usual. 
+To view the database you can go to `http://localhost:5050` using pgAdmin in a browser as usual. 
 
 For convenience here is the database information:
-Host: fullstack-postgres
-User: postgres
-Password: postgres (gasp)
-Database Name: aktify_db_1
-Port: 5432
+- Host: fullstack-postgres
+- User: postgres
+- Password: postgres (gasp)
+- Database Name: aktify_db_1
+- Port: 5432
+
+pgAdmin Credentials:
+- u: live@admin.com
+- p: password
 
 And here is the curl commands to run:
 
