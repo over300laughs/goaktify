@@ -58,7 +58,7 @@ func initEnv() error {
 	if err != nil {
 		log.Fatalf("Error getting env, %v", err)
 	} else {
-		fmt.Println("We are getting the env values")
+		fmt.Println("Environment variables have been found")
 	}
 	return err
 }

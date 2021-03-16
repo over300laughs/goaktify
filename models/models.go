@@ -49,13 +49,28 @@ func (c *Campaign) read(id int) error {
 }
 
 func (c *Campaign) Update() {
-
+	//TODO: implement this soon
 }
 
-func (c *Campaign) Delete() {
+func (c *Campaign) Delete(id int) error {
+	insertQuery := `DELETE FROM campaigns WHERE id = $1;`
 
+	_, err := DB.Exec(insertQuery, id)
+	if err != nil {
+		return err
+	}
+	return nil
 }
 
 func (c *Campaign) List() {
 
+	// company table unimplemented
+	/* query := `SELECT id,
+		    name,
+		    description,
+		    created_on,
+		    updated_on,
+	        is_active,
+	        company_id -- foreign_key we need!
+		FROM campaigns WHERE company_id = $1;` */
 }

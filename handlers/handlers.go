@@ -16,7 +16,6 @@ type Handler interface {
 	Update(w http.ResponseWriter, r *http.Request)
 	Delete(w http.ResponseWriter, r *http.Request)
 	List(w http.ResponseWriter, r *http.Request)
-	HealthChecker(w http.ResponseWriter, r *http.Request)
 }
 
 type CampaignHandler struct{}
@@ -79,11 +78,28 @@ func (ch *CampaignHandler) Update(w http.ResponseWriter, r *http.Request) {
 }
 
 func (ch *CampaignHandler) Delete(w http.ResponseWriter, r *http.Request) {
-	fmt.Print("Delete endpoint unimplemented")
+
+	id, err := strconv.Atoi(pat.Param(r, "id"))
+	if err != nil {
+		http.Error(w, err.Error(), http.StatusBadRequest)
+		return
+	}
+
+	var campaign models.Campaign
+
+	err = campaign.Delete(id)
+	if err != nil {
+		http.Error(w, err.Error(), http.StatusInternalServerError)
+		return
+	}
+
+	// TODO handle case where its already been deleted more gracefully
+	w.WriteHeader(200)
 	return
+
 }
 
 func (ch *CampaignHandler) List(w http.ResponseWriter, r *http.Request) {
-	fmt.Print("List endpoint unimplemented")
+	fmt.Print("List endpoint unimplemented since companies don't exist")
 	return
 }
